@@ -74,21 +74,31 @@ var sumTotal = function(products) {
 // return an object consisting of dessert types and how many of each.
 // exampleOutput: { dessertType: 3, dessertType2: 1 }
 var dessertCategories = function(desserts) {
-
+  return _.reduce(desserts, function(typeCount, dessert) {
+    !!typeCount[dessert.type] ? typeCount[dessert.type]++ : typeCount[dessert.type] = 1;
+    return typeCount;
+  }, {});
 };
 
 // given an array of movie data objects,return an array containing
 // movies that came out between 1990 and 2000.
 // TIP: use an array as your accumulator - don't push to an external array!
 var ninetiesKid = function(movies) {
-
+  return _.reduce(movies, function(array, movie) {
+    if (movie.releaseYear >= 1990 && movie.releaseYear < 2000) {
+      array.push(movie.title);
+    }
+    return array;
+  }, []);
 };
 
 // return an boolean stating if there exists a movie with a shorter
 // runtime than your time limit.
 // timeLimit is an integer representing a number of minutes.
 var movieNight = function(movies, timeLimit) {
-
+  return _.reduce(movies, function(exists, movie) {
+    return movie.runtime < timeLimit ? exists = true : exists;
+  }, false);
 };
 
 /*
@@ -100,14 +110,26 @@ var movieNight = function(movies, timeLimit) {
 // given an array of strings, use _.map to return a new array containing all
 // strings converted to uppercase letters.
 var upperCaseFruits = function(fruits) {
-
+  return _.map(fruits, function(fruit) {
+    return fruit = fruit.toUpperCase();
+  });
 };
 
 // given an array of dessert objects, return a new array of objects
 // that have a new "glutenFree" property, with a boolean value.
 // TIP: Items that contain flour are not gluten-free.
-var glutenFree = function(desserts) {
 
+// I - array of objects with name, ingredients (array), and type properties
+// O - array of same objects with new gluten-free boolean property
+// C - flour is in ingredients array
+// E -
+// Strategy: use _.map; access ingredients property - if ingredients.includes('flour') then
+// dessert.gluten-free = false
+var glutenFree = function(desserts) {
+  return _.map(desserts, function(dessert) {
+    dessert.ingredients.includes('flour') ? dessert.glutenFree = false : dessert.glutenFree = false;
+    return dessert;
+  });
 };
 
 // use _.map to return an array of items with their sale prices, with a new property
@@ -131,5 +153,8 @@ var glutenFree = function(desserts) {
 
 */
 var applyCoupon = function(groceries, coupon) {
-
+  return _.map(groceries, function(item) {
+    item.salePrice = '$' + (parseFloat(item.price.slice(1)) * (1 - coupon)).toFixed(2);
+    return item;
+  });
 };
